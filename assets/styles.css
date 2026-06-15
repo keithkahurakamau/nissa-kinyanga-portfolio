@@ -423,23 +423,23 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
   box-shadow:0 40px 80px -40px rgba(40,25,12,.7);
 }
 .cform__row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-.field{display:flex;flex-direction:column;gap:.3rem}
-.field > span{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--cream)}
-.field input,.field select,.field textarea{
+.cfield{display:flex;flex-direction:column;gap:.3rem}
+.cfield > span{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--cream)}
+.cfield input,.cfield select,.cfield textarea{
   font-family:var(--sans);font-size:.94rem;color:var(--cream);
   background:rgba(33,30,26,.28);border:1px solid rgba(246,239,226,.3);border-radius:10px;
   padding:.62rem .85rem;transition:border-color .3s,background .3s,box-shadow .3s;width:100%;resize:vertical;
 }
-.field textarea{min-height:74px}
-.field select{appearance:none;cursor:pointer;
+.cfield textarea{min-height:74px}
+.cfield select{appearance:none;cursor:pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23f6efe2' stroke-width='2'%3E%3Cpath d='M3 5l4 4 4-4'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right .9rem center}
-.field select option{color:#211e1a}
-.field input::placeholder,.field textarea::placeholder{color:rgba(246,239,226,.5)}
-.field input:focus,.field select:focus,.field textarea:focus{
+.cfield select option{color:#211e1a}
+.cfield input::placeholder,.cfield textarea::placeholder{color:rgba(246,239,226,.5)}
+.cfield input:focus,.cfield select:focus,.cfield textarea:focus{
   outline:none;border-color:var(--sage-bright);background:rgba(33,30,26,.4);
   box-shadow:0 0 0 3px rgba(158,176,106,.25)}
-.field.invalid input,.field.invalid textarea,.field.invalid select{border-color:#c97a5e;box-shadow:0 0 0 3px rgba(201,122,94,.22)}
+.cfield.invalid input,.cfield.invalid textarea,.cfield.invalid select{border-color:#c97a5e;box-shadow:0 0 0 3px rgba(201,122,94,.22)}
 .cform__submit{justify-content:center;margin-top:.3rem}
 .cform__submit:disabled{opacity:.65;cursor:wait}
 .cform__note{font-size:.9rem;color:var(--cream);min-height:1.2em;text-align:center;font-weight:600}

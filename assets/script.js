@@ -156,7 +156,7 @@
     const TO = 'bookings@lengishu.com'; // swap for Nissa's address or a form endpoint
 
     const setNote = (msg, cls) => { note.textContent = msg; note.className = 'cform__note' + (cls ? ' ' + cls : ''); };
-    const fieldOf = (el) => el.closest('.field');
+    const fieldOf = (el) => el.closest('.cfield');
     const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
     form.querySelectorAll('input,textarea,select').forEach((el) => {
