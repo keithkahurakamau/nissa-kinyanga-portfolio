@@ -41,11 +41,19 @@
 html{scroll-behavior:smooth}
 body{
   font-family:var(--sans);
-  background:var(--beige);
   color:var(--ink);
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
   line-height:1.6;
+  /* warm gradient mesh — soft brown & sage blooms over beige */
+  background:
+    radial-gradient(38% 30% at 12% 14%, rgba(168,138,104,.28), transparent 60%),
+    radial-gradient(34% 28% at 88% 10%, rgba(158,176,106,.20), transparent 60%),
+    radial-gradient(42% 34% at 78% 62%, rgba(168,138,104,.22), transparent 62%),
+    radial-gradient(40% 32% at 8% 78%, rgba(158,176,106,.14), transparent 60%),
+    radial-gradient(50% 40% at 50% 100%, rgba(205,180,148,.30), transparent 70%),
+    var(--beige);
+  background-attachment: fixed;
 }
 img{display:block;max-width:100%}
 section{position:relative}
@@ -198,9 +206,15 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 
 /* ════════ STATS ════════ */
 .stats{
-  background:var(--char);color:var(--cream);
+  color:var(--cream);
   display:grid;grid-template-columns:repeat(4,1fr);
   max-width:var(--maxw);margin:0 auto;
+  /* dark gradient mesh — sage & brown embers on charcoal */
+  background:
+    radial-gradient(40% 120% at 12% 0%, rgba(139,154,91,.30), transparent 60%),
+    radial-gradient(44% 130% at 88% 100%, rgba(138,106,73,.40), transparent 62%),
+    radial-gradient(30% 110% at 55% 50%, rgba(158,176,106,.12), transparent 70%),
+    var(--char);
 }
 .stats{padding:3.5rem clamp(1.2rem,4vw,3rem);gap:1.5rem;border-radius:0}
 .stat{display:flex;flex-direction:column;gap:.4rem;padding-right:1.5rem;border-right:1px solid rgba(255,255,255,.1)}
@@ -398,7 +412,12 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
   background:linear-gradient(160deg,var(--brown-soft),var(--brown-deep));
   padding:clamp(5rem,10vw,9rem) clamp(1.2rem,4vw,3rem);position:relative;overflow:hidden;
 }
-.contact::before{content:"";position:absolute;inset:0;background:radial-gradient(50% 60% at 30% 20%,rgba(255,240,210,.35),transparent)}
+.contact::before{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(40% 55% at 22% 14%, rgba(255,240,210,.40), transparent 60%),
+    radial-gradient(38% 50% at 88% 30%, rgba(158,176,106,.30), transparent 62%),
+    radial-gradient(46% 55% at 70% 92%, rgba(80,58,38,.45), transparent 65%);
+  mix-blend-mode:soft-light;opacity:.9}
 .contact__inner{max-width:var(--maxw);margin:0 auto;position:relative;z-index:2;
   display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:start}
 .contact__inner h2{color:var(--cream);font-size:clamp(2.1rem,4.4vw,3.6rem);margin:.5rem 0 1.2rem}
