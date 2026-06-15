@@ -1,0 +1,7 @@
+node_modules/
+package.json
+package-lock.json
+_diag.mjs
+_d3.mjs
+*.log
+.DS_Store
