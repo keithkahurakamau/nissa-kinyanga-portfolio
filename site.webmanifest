@@ -1,0 +1,16 @@
+{
+  "name": "Nissa Ole Kinyaga · Silver Safari Guide",
+  "short_name": "Nissa Kinyaga",
+  "description": "Maasai Silver Safari Guide leading walking safaris and rhino tracking on the Borana Conservancy, Northern Kenya.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ece2d2",
+  "theme_color": "#ece2d2",
+  "lang": "en",
+  "icons": [
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Update <lastmod> dates whenever page content changes. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.nissahsafaris.com/</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.nissahsafaris.com/images/gallery-8-nissa-dusk.jpg</image:loc>
+      <image:caption>Nissa Ole Kinyaga at dusk on the Borana Conservancy</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.nissahsafaris.com/images/nissa-portrait.jpg</image:loc>
+      <image:caption>Nissa Ole Kinyaga, Silver Safari Guide, at dawn on the Borana Conservancy</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.nissahsafaris.com/gazette.html</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>
