@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Mulish:ital,wght@0,300..900;1,300..700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/styles.css?v=4" />
+<link rel="stylesheet" href="assets/styles.css?v=9" />
 </head>
 <body>
 
@@ -34,6 +34,13 @@
   <button class="nav__burger" aria-label="Menu"><span></span><span></span></button>
 </header>
 
+<!-- ░░ scroll progress + current-section overlay ░░ -->
+<div class="scrollprog" aria-hidden="true"><span id="scrollProgBar"></span></div>
+<div class="sectionpill" id="sectionPill" role="status" aria-live="polite">
+  <span class="sectionpill__num" id="sectionPillNum">01</span>
+  <span class="sectionpill__name" id="sectionPillName">Welcome</span>
+</div>
+
 <main id="top">
 
 <!-- ░░ HERO ░░ -->
@@ -43,7 +50,7 @@
   <div class="hero__light" aria-hidden="true"></div>
 
   <div class="hero__inner">
-    <p class="eyebrow reveal" data-d="0">Laikipiak Maasai · Mukogodo Forest · Est. 2002</p>
+    <p class="eyebrow reveal" data-d="0">Laikipia Maasai · Mukogodo Forest · Est. 2002</p>
     <h1 class="hero__title">
       <span class="reveal" data-d="1">Tracking rhino</span>
       <span class="reveal" data-d="2">at first light,</span>
@@ -158,6 +165,7 @@
     <p class="eyebrow reveal">The Journey</p>
     <h2 class="reveal">Two decades, tracked <span class="serif-italic">step by step.</span></h2>
   </div>
+  <div class="timeline-wrap">
   <ol class="timeline">
     <li class="tl reveal">
       <span class="tl__yr">Early days</span>
@@ -165,7 +173,7 @@
       <p>Lewa Wildlife Conservancy. First ears on the bush, coordinating teams and learning the rhythm of the land.</p>
     </li>
     <li class="tl reveal">
-      <span class="tl__yr">~2000s</span>
+      <span class="tl__yr">~2000's</span>
       <h3>Kenya Utalii College</h3>
       <p>Advanced Tour Guiding Certificate, the formal foundation beneath a lifetime of bush knowledge.</p>
     </li>
@@ -185,6 +193,95 @@
       <p>Leading conservation safaris on the 32,000-acre Borana Conservancy. Top-tier certification, hands in the work.</p>
     </li>
   </ol>
+
+  <!-- ░░ little fauna walking the timeline ░░ -->
+  <div class="tl-fauna" aria-hidden="true">
+
+    <!-- bird -->
+    <span class="crit crit--bird" style="--x:9%;--delay:.1s">
+      <svg class="crit__svg" viewBox="0 0 54 44" xmlns="http://www.w3.org/2000/svg">
+        <line x1="22" y1="30" x2="22" y2="41" stroke="#6f543a" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="29" y1="30" x2="29" y2="41" stroke="#6f543a" stroke-width="2.4" stroke-linecap="round"/>
+        <path class="part part--tail" d="M2 16 L22 25 L20 31 Z" fill="#8a6a49"/>
+        <ellipse cx="26" cy="24" rx="14" ry="11" fill="#a98a68"/>
+        <path d="M18 23 q8 5 16 1 q-3 9 -16 3 Z" fill="#8a6a49"/>
+        <circle cx="38" cy="15" r="8" fill="#8a6a49"/>
+        <polygon points="45,13 53,16 45,19" fill="#6f7d46"/>
+        <circle cx="40" cy="13" r="1.7" fill="#2b2620"/>
+      </svg>
+    </span>
+
+    <!-- acacia tree -->
+    <span class="crit crit--acacia" style="--x:29%;--delay:0s">
+      <svg class="crit__svg" viewBox="0 0 74 70" xmlns="http://www.w3.org/2000/svg">
+        <path d="M34 68 C33 52 31 44 26 36 L33 34 C36 44 38 54 40 68 Z" fill="#6f543a"/>
+        <path d="M33 40 C28 36 22 34 16 33 M37 38 C44 35 50 33 58 33" stroke="#6f543a" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M6 32 Q37 4 68 32 Q56 40 37 38 Q18 40 6 32 Z" fill="#6f7d46"/>
+        <path d="M10 30 Q37 12 64 30 Q54 34 37 33 Q20 34 10 30 Z" fill="#9eb06a"/>
+      </svg>
+    </span>
+
+    <!-- giraffe -->
+    <span class="crit crit--giraffe" style="--x:49%;--delay:.3s">
+      <svg class="crit__svg" viewBox="0 0 52 84" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#cdb494" stroke-width="5" stroke-linecap="round">
+          <line x1="12" y1="56" x2="11" y2="80"/>
+          <line x1="22" y1="58" x2="22" y2="80"/>
+          <line x1="30" y1="58" x2="31" y2="80"/>
+        </g>
+        <path class="part part--tail" d="M9 52 q-6 8 -4 16" stroke="#8a6a49" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="21" cy="52" rx="16" ry="11" fill="#cdb494"/>
+        <path d="M30 50 C34 36 36 24 40 14 L48 16 C45 28 42 40 36 54 Z" fill="#cdb494"/>
+        <path d="M40 16 C40 9 46 6 50 9 C52 12 49 17 46 18 Z" fill="#cdb494"/>
+        <line x1="44" y1="8" x2="43" y2="2" stroke="#6f543a" stroke-width="2"/><circle cx="43" cy="2" r="2" fill="#6f543a"/>
+        <line x1="48" y1="9" x2="48" y2="3" stroke="#6f543a" stroke-width="2"/><circle cx="48" cy="3" r="2" fill="#6f543a"/>
+        <circle cx="46" cy="12" r="1.4" fill="#2b2620"/>
+        <g fill="#8a6a49">
+          <ellipse cx="18" cy="50" rx="3.2" ry="2.6"/><ellipse cx="26" cy="54" rx="3" ry="2.4"/>
+          <ellipse cx="14" cy="56" rx="2.6" ry="2.2"/><ellipse cx="33" cy="44" rx="2.6" ry="2.2"/>
+          <ellipse cx="40" cy="34" rx="2.4" ry="2"/>
+        </g>
+      </svg>
+    </span>
+
+    <!-- elephant -->
+    <span class="crit crit--ele" style="--x:69%;--delay:.15s">
+      <svg class="crit__svg" viewBox="0 0 72 60" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#a98a68">
+          <rect x="16" y="38" width="9" height="18" rx="3"/>
+          <rect x="30" y="40" width="9" height="16" rx="3"/>
+          <rect x="44" y="38" width="9" height="18" rx="3"/>
+        </g>
+        <ellipse cx="35" cy="34" rx="24" ry="16" fill="#a98a68"/>
+        <circle cx="58" cy="30" r="13" fill="#a98a68"/>
+        <ellipse class="part part--ear" cx="55" cy="28" rx="8" ry="10" fill="#8a6a49"/>
+        <path d="M67 32 q8 6 4 18 q-1 6 -6 4 q3 -4 1 -9 q-2 -6 -7 -7 Z" fill="#a98a68"/>
+        <path d="M63 41 q-2 6 -7 7" stroke="#ece2d2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="61" cy="27" r="1.6" fill="#2b2620"/>
+      </svg>
+    </span>
+
+    <!-- rhino (by the 'Today' node) -->
+    <span class="crit crit--rhino" style="--x:89%;--delay:.45s">
+      <svg class="crit__svg" viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#a98a68">
+          <rect x="18" y="34" width="9" height="18" rx="3"/>
+          <rect x="30" y="36" width="9" height="16" rx="3"/>
+          <rect x="46" y="34" width="9" height="18" rx="3"/>
+          <rect x="58" y="36" width="9" height="16" rx="3"/>
+        </g>
+        <path d="M12 26 q-7 4 -6 12" stroke="#8a6a49" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="40" cy="28" rx="28" ry="15" fill="#a98a68"/>
+        <path d="M64 22 q13 -1 12 12 q-1 6 -8 8 q-9 1 -12 -7 q-2 -10 8 -13 Z" fill="#a98a68"/>
+        <path class="part part--ear" d="M60 16 q3 -6 7 -4 q-1 5 -5 7 Z" fill="#8a6a49"/>
+        <path d="M75 20 q1 -12 -3 -17 q-4 7 -1 17 Z" fill="#6f543a"/>
+        <path d="M66 15 q0 -6 -2 -9 q-3 5 -1 9 Z" fill="#6f543a"/>
+        <circle cx="69" cy="24" r="1.6" fill="#2b2620"/>
+      </svg>
+    </span>
+
+  </div>
+  </div>
 </section>
 
 <!-- ░░ IN THE FIELD ░░ -->
@@ -206,10 +303,10 @@
     <article class="card card--photo reveal" style="background-image:url('images/field-gamedrive.jpg')"><span class="card__num">01</span><h3>Day &amp; Night Game Drives</h3><p>Big Five by day; porcupine, honey badger and leopard after dark.</p></article>
     <article class="card card--photo reveal" style="background-image:url('images/field-walk.jpg')"><span class="card__num">02</span><h3>Walking Wild Safaris</h3><p>The small details of the ecosystem, and the climb to Pride Rock.</p></article>
     <article class="card card--photo reveal" style="background-image:url('images/field-horse.jpg')"><span class="card__num">03</span><h3>Horseback Safari</h3><p>Ride among giraffe and zebra with Mount Kenya on the horizon.</p></article>
-    <article class="card reveal"><span class="card__num">04</span><h3>Helicopter &amp; Fixed-Wing</h3><p>The Northern Frontier seen whole, from the air.</p></article>
+    <article class="card card--photo reveal" style="background-image:url('images/field-helicopter.jpg')"><span class="card__num">04</span><h3>Helicopter &amp; Fixed-Wing</h3><p>The Northern Frontier seen whole, from the air.</p></article>
     <article class="card card--photo reveal" style="background-image:url('images/field-bike.jpg')"><span class="card__num">05</span><h3>Mountain &amp; E-Biking</h3><p>Through hills, valleys and herds of zebra.</p></article>
-    <article class="card reveal"><span class="card__num">06</span><h3>High-Altitude Trout Fishing</h3><p>Still mountain lakes, far above the plains.</p></article>
-    <article class="card reveal"><span class="card__num">07</span><h3>Quad &amp; Sand Rivers</h3><p>Adventure rides through Borana's seasonal sand rivers.</p></article>
+    <article class="card card--photo reveal" style="background-image:url('images/field-fishing.jpg')"><span class="card__num">06</span><h3>High-Altitude Trout Fishing</h3><p>Still mountain lakes, far above the plains.</p></article>
+    <article class="card card--photo reveal" style="background-image:url('images/field-quad.jpg')"><span class="card__num">07</span><h3>Quad &amp; Sand Rivers</h3><p>Adventure rides through Borana's seasonal sand rivers.</p></article>
     <article class="card card--photo reveal" style="background-image:url('images/field-rhino.jpg')"><span class="card__num">08</span><h3>Anti-Poaching Patrol</h3><p>Join the rangers on their evening deployment.</p></article>
   </div>
 </section>
@@ -375,6 +472,24 @@
 
 </main>
 
+<!-- ░░ GAZETTE CROSS-LINK ░░ -->
+<section class="gazette-cta">
+  <div class="gazette-cta__inner reveal">
+    <p class="eyebrow">Extra · Extra</p>
+    <h2>Read it as a <span class="serif-italic">newspaper</span>.</h2>
+    <p class="gazette-cta__lede">The very same story, set in ink as a vintage brutalist broadsheet —
+      <em>The Northern Frontier Gazette</em>, crushed-newsprint and all.</p>
+    <a href="gazette.html" class="gazette-btn">
+      <span class="gazette-btn__rule"></span>
+      <span class="gazette-btn__body">
+        <span class="gazette-btn__k">The Northern Frontier Gazette</span>
+        <span class="gazette-btn__t">Open the broadsheet</span>
+      </span>
+      <span class="gazette-btn__ar">→</span>
+    </a>
+  </div>
+</section>
+
 <footer class="foot">
   <div class="foot__brand">Nissa <em>Ole</em> Kinyaga</div>
   <p class="foot__line">Silver Safari Guide · Lengishu, Borana Conservancy · Laikipia, Kenya</p>
@@ -393,6 +508,6 @@
   <span class="lightbox__count"></span>
 </div>
 
-<script src="assets/script.js?v=4"></script>
+<script src="assets/script.js?v=9"></script>
 </body>
 </html>

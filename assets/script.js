@@ -29,6 +29,53 @@
     if (window.innerWidth <= 720) links.style.cssText = '';
   }));
 
+  /* scroll progress bar + current-section overlay */
+  const progBar = $('#scrollProgBar');
+  const pill = $('#sectionPill');
+  const pillNum = $('#sectionPillNum');
+  const pillName = $('#sectionPillName');
+  const navLinks = $$('.nav__links a[href^="#"]');
+
+  /* ordered list of sections to track, with friendly labels */
+  const sectionList = [
+    { id: 'story',   label: 'The Story' },
+    { id: 'journey', label: 'The Journey' },
+    { id: 'field',   label: 'In the Field' },
+    { id: 'gallery', label: 'Gallery' },
+    { id: 'words',   label: 'In Their Words' },
+    { id: 'creed',   label: 'Philosophy' },
+    { id: 'contact', label: 'Plan a Safari' }
+  ].map((s, i) => ({ ...s, num: i + 1, el: document.getElementById(s.id) }))
+   .filter((s) => s.el);
+
+  if (progBar) {
+    const docH = () => (document.documentElement.scrollHeight - window.innerHeight) || 1;
+    const updateProg = () => {
+      const p = Math.min(Math.max(window.scrollY / docH(), 0), 1);
+      progBar.style.transform = 'scaleX(' + p + ')';
+      if (pill) pill.classList.toggle('show', window.scrollY > window.innerHeight * 0.55);
+    };
+    updateProg();
+    window.addEventListener('scroll', updateProg, { passive: true });
+    window.addEventListener('resize', updateProg, { passive: true });
+  }
+
+  if (pill && sectionList.length) {
+    const setActive = (s) => {
+      pillNum.textContent = String(s.num).padStart(2, '0');
+      pillName.textContent = s.label;
+      navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + s.id));
+    };
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const s = sectionList.find((x) => x.el === e.target);
+        if (s) setActive(s);
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sectionList.forEach((s) => spy.observe(s.el));
+  }
+
   /* reveal on scroll */
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {

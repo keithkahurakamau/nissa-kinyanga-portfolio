@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Northern Frontier Gazette · Nissa Ole Kinyaga</title>
+<meta name="description" content="A brutalist broadsheet front page for Nissa Ole Kinyaga — Maasai Silver Guide of the Borana Conservancy, one of only 59 in Kenya." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   THE NORTHERN FRONTIER GAZETTE
+   A brutalist vintage-broadsheet front page.
+   Ink + aged newsprint + one rubber-stamp red.
+   ============================================================ */
+
+:root{
+  /* palette taken straight from index.html — warm beige / ink / sage / brown */
+  --paper:#ece2d2;        /* site --beige */
+  --paper-deep:#e2d4bf;   /* site --beige-deep */
+  --ink:#2b2620;          /* site --ink */
+  --ink-soft:#5f564a;     /* site --ink-soft */
+  --ink-faint:#8a6a49;    /* site --brown */
+  --stamp:#6f7d46;        /* site --sage-deep (signature accent) */
+  --stamp-warm:#6f543a;   /* site --brown-deep */
+  --stamp-blue:#2a3b52;   /* faded postmark blue */
+  --hair:1.5px;
+  --rule:3px;
+  --beam:6px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+
+body{
+  font-family:"Spectral",Georgia,serif;
+  color:var(--ink);
+  /* LIGHT aged paper: subtle crush + gentle brown/green blooms over beige,
+     so the dark ink text stays perfectly readable (background only) */
+  background:
+    url("images/paper-crush.jpg") center/cover fixed,
+    radial-gradient(40% 32% at 14% 16%, rgba(139,154,91,.20), transparent 62%),
+    radial-gradient(42% 34% at 86% 24%, rgba(138,106,73,.22), transparent 62%),
+    radial-gradient(46% 38% at 72% 82%, rgba(139,154,91,.16), transparent 64%),
+    radial-gradient(44% 36% at 26% 90%, rgba(138,106,73,.18), transparent 64%),
+    var(--paper);
+  background-blend-mode:soft-light,normal,normal,normal,normal,normal;
+  background-attachment:fixed;
+  line-height:1.5;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ---------- THE CRUSTY NEWSPRINT TEXTURE (layered) ---------- */
+/* base aged tone + foxing stains + fiber + vignette */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    /* foxing / coffee stains — gentle, keeps paper light */
+    radial-gradient(130px 95px at 12% 18%, rgba(120,80,34,.14), transparent 70%),
+    radial-gradient(170px 130px at 88% 26%, rgba(120,80,34,.11), transparent 70%),
+    radial-gradient(100px 78px at 72% 72%, rgba(96,60,24,.13), transparent 70%),
+    radial-gradient(240px 170px at 30% 88%, rgba(120,80,34,.10), transparent 72%),
+    radial-gradient(90px 70px at 64% 12%, rgba(96,60,24,.09), transparent 72%),
+    /* paper fibre cross-hatch */
+    repeating-linear-gradient(8deg, rgba(70,52,30,.04) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-82deg, rgba(70,52,30,.03) 0 2px, transparent 2px 5px),
+    /* soft corner age vignette */
+    radial-gradient(155% 135% at 50% 40%, transparent 62%, rgba(58,38,16,.16) 100%);
+  mix-blend-mode:multiply;
+}
+/* gritty crust grain — rendered as a REAL inline <svg> element (most
+   reliable cross-browser; CSS data-URI filters don't run everywhere) */
+.crust{
+  position:fixed;inset:0;width:100vw;height:100vh;z-index:1;
+  pointer-events:none;mix-blend-mode:multiply;opacity:.22;
+}
+/* coarse over-speckle for extra "crust" */
+.crust--coarse{opacity:.12}
+/* the vertical centre fold crease */
+.fold{position:fixed;top:0;bottom:0;left:50%;width:120px;transform:translateX(-50%);z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(60,42,20,.14) 46%,rgba(255,250,235,.22) 50%,rgba(60,42,20,.14) 54%,transparent);
+  mix-blend-mode:multiply;display:none}
+@media(min-width:1100px){.fold{display:block}}
+
+.sheet{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:18px clamp(14px,3vw,34px) 70px}
+
+/* ---------- shared bits ---------- */
+.mono{font-family:"Space Mono",monospace}
+.rule{border:0;border-top:var(--rule) solid var(--ink);margin:0}
+.rule--hair{border-top:var(--hair) solid var(--ink)}
+.rule--double{height:7px;border-top:var(--rule) solid var(--ink);border-bottom:var(--hair) solid var(--ink)}
+.rule--thick{border-top:var(--beam) solid var(--ink)}
+a{color:inherit}
+
+/* ============ TOP FOLIO BAR ============ */
+.folio{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-soft);padding-bottom:8px;flex-wrap:wrap;
+}
+.folio b{color:var(--ink)}
+.folio .stamp-red{color:var(--stamp);font-weight:700;border:2px solid var(--stamp);
+  padding:2px 8px;transform:rotate(-3deg);display:inline-block}
+
+/* ============ MASTHEAD ============ */
+.masthead{text-align:center;padding:14px 0 6px;position:relative}
+.masthead__over{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.42em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.masthead__title{
+  font-family:"Bodoni Moda",serif;font-weight:900;
+  font-size:clamp(2.6rem,10.5vw,8.4rem);line-height:.84;letter-spacing:-.01em;
+  text-transform:uppercase;color:var(--ink);
+  /* heavy ink bleed */
+  text-shadow:0 1px 0 rgba(24,20,16,.35), .5px .5px 0 rgba(24,20,16,.25);
+}
+.masthead__title .swash{font-style:italic;font-weight:700}
+.masthead__sub{display:flex;justify-content:center;align-items:center;gap:14px;
+  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-soft);margin-top:12px;flex-wrap:wrap}
+.masthead__sub span{white-space:nowrap}
+.masthead__dot{color:var(--stamp)}
+
+/* almanac flank boxes */
+.flank{display:none}
+@media(min-width:900px){
+  .flank{display:block;position:absolute;top:18px;width:150px;border:var(--hair) solid var(--ink);
+    padding:8px 10px;font-family:"Space Mono",monospace;font-size:10px;line-height:1.5;
+    text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);background:rgba(231,222,198,.4)}
+  .flank--l{left:0}.flank--r{right:0;text-align:right}
+  .flank h4{font-size:10px;letter-spacing:.14em;color:var(--ink);border-bottom:var(--hair) solid var(--ink);
+    padding-bottom:4px;margin-bottom:5px}
+  .flank b{color:var(--ink)}
+}
+
+/* ============ STOP-PRESS TICKER ============ */
+.ticker{border-top:var(--rule) solid var(--ink);border-bottom:var(--rule) solid var(--ink);
+  background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;
+  display:flex;align-items:center;margin-top:10px}
+.ticker__label{background:var(--stamp);color:#fff;font-family:"Space Mono",monospace;font-weight:700;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:7px 12px;white-space:nowrap;
+  flex:none;border-right:var(--rule) solid var(--ink)}
+.ticker__track{display:inline-flex;gap:0;animation:slide 38s linear infinite}
+.ticker__track span{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;padding:7px 22px;border-right:var(--hair) solid rgba(231,222,198,.25)}
+.ticker__track i{color:var(--stamp);font-style:normal}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ============ HERO GRID ============ */
+.lede{display:grid;grid-template-columns:1.55fr .95fr;gap:0;margin-top:14px;
+  border-bottom:var(--beam) solid var(--ink)}
+@media(max-width:860px){.lede{grid-template-columns:1fr}}
+
+.lede__main{padding:18px 26px 24px 0;border-right:var(--rule) solid var(--ink)}
+@media(max-width:860px){.lede__main{border-right:0;padding-right:0;border-bottom:var(--rule) solid var(--ink)}}
+
+.kicker{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--stamp);font-weight:700;margin-bottom:6px}
+.headline{
+  font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(2.7rem,8.2vw,6.6rem);line-height:.88;letter-spacing:.005em;color:var(--ink);
+}
+.headline em{font-family:"Bodoni Moda",serif;font-style:italic;font-weight:700;
+  text-transform:none;letter-spacing:-.01em}
+.headline .red{color:var(--stamp)}
+.deck{font-family:"Bodoni Moda",serif;font-size:clamp(1.05rem,2.4vw,1.5rem);font-weight:500;
+  line-height:1.32;margin-top:14px;max-width:42ch;color:var(--ink-soft)}
+.byline{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-faint);margin-top:14px;
+  border-top:var(--hair) solid var(--ink);border-bottom:var(--hair) solid var(--ink);padding:7px 0}
+.byline b{color:var(--ink)}
+
+/* body columns under the headline */
+.cols{column-count:2;column-gap:26px;column-rule:var(--hair) solid var(--ink);
+  margin-top:18px;font-size:.97rem;line-height:1.62;text-align:justify;hyphens:auto}
+@media(max-width:560px){.cols{column-count:1}}
+.cols p{margin-bottom:.9em}
+.cols p:first-child::first-letter{
+  font-family:"Bodoni Moda",serif;font-weight:900;float:left;font-size:4.6rem;line-height:.72;
+  padding:6px 10px 0 0;color:var(--stamp)}
+
+/* the right rail (photo + at-a-glance) */
+.rail{padding:18px 0 24px 26px;display:flex;flex-direction:column;gap:16px}
+@media(max-width:860px){.rail{padding-left:0;padding-top:6px}}
+
+.plate{position:relative;border:var(--rule) solid var(--ink);overflow:hidden;background:var(--paper-deep)}
+.plate img{display:block;width:100%;height:100%;object-fit:cover;
+  /* halftone-ink photo treatment */
+  filter:grayscale(1) contrast(1.28) brightness(1.04) sepia(.32) saturate(.6);
+  mix-blend-mode:multiply}
+.plate::after{ /* halftone dot screen */
+  content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.5;
+  background-image:radial-gradient(rgba(24,20,16,.9) 32%, transparent 33%);
+  background-size:4px 4px}
+.plate__cap{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--paper);background:var(--ink);
+  position:absolute;left:0;right:0;bottom:0;padding:6px 9px}
+.plate__cap b{color:var(--stamp)}
+
+/* rubber stamp overlay */
+.stamp-seal{position:absolute;top:10px;right:10px;z-index:4;width:108px;height:108px;
+  border:3px double var(--stamp);border-radius:50%;color:var(--stamp);
+  display:grid;place-content:center;text-align:center;transform:rotate(-14deg);
+  font-family:"Space Mono",monospace;font-weight:700;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;line-height:1.25;opacity:.86;mix-blend-mode:multiply;
+  box-shadow:inset 0 0 0 1px rgba(168,47,28,.5)}
+.stamp-seal b{font-size:15px;display:block;letter-spacing:.04em}
+
+/* AT A GLANCE box */
+.glance{border:var(--rule) solid var(--ink);padding:0}
+.glance__hd{background:var(--ink);color:var(--paper);font-family:"Space Mono",monospace;
+  font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:8px 12px}
+.glance dl{display:grid}
+.glance dl>div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  padding:9px 12px;border-bottom:var(--hair) solid var(--ink)}
+.glance dl>div:last-child{border-bottom:0}
+.glance dt{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint)}
+.glance dd{font-family:"Bodoni Moda",serif;font-weight:900;font-size:1.5rem;line-height:1}
+.glance dd.sm{font-size:.92rem;font-weight:700;text-align:right;font-family:"Spectral",serif}
+
+/* ============ SECOND DECK: three-column field report ============ */
+.deck-band{display:grid;grid-template-columns:repeat(3,1fr);margin-top:0;
+  border-bottom:var(--beam) solid var(--ink)}
+@media(max-width:760px){.deck-band{grid-template-columns:1fr}}
+.report{padding:22px 22px 26px;border-right:var(--rule) solid var(--ink)}
+.report:last-child{border-right:0}
+@media(max-width:760px){.report{border-right:0;border-bottom:var(--rule) solid var(--ink)}
+  .report:last-child{border-bottom:0}}
+.report__no{font-family:"Anton",sans-serif;font-size:2.4rem;line-height:1;color:var(--paper);
+  -webkit-text-stroke:1.4px var(--ink)}
+.report h3{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:1.5rem;line-height:.98;margin:8px 0 9px;letter-spacing:.01em}
+.report p{font-size:.92rem;line-height:1.55;color:var(--ink-soft)}
+.report .tag{display:inline-block;margin-top:11px;font-family:"Space Mono",monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;border:var(--hair) solid var(--ink);padding:3px 8px}
+
+/* ============ DISPATCH STRIP (photos + pull quote) ============ */
+.dispatch{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:0;
+  border-bottom:var(--beam) solid var(--ink)}
+@media(max-width:860px){.dispatch{grid-template-columns:1fr 1fr}.dispatch .quotecell{grid-column:1/-1}}
+@media(max-width:520px){.dispatch{grid-template-columns:1fr}}
+.dispatch .plate{border:0;border-right:var(--rule) solid var(--ink);height:100%;min-height:240px}
+.dispatch .plate:nth-child(2){border-right:0}
+.quotecell{padding:26px 24px;display:flex;flex-direction:column;justify-content:center;
+  border-left:var(--rule) solid var(--ink);background:var(--paper-deep)}
+@media(max-width:860px){.quotecell{border-left:0;border-top:var(--rule) solid var(--ink)}}
+.quotecell .mark{font-family:"Bodoni Moda",serif;font-size:4rem;line-height:.4;color:var(--stamp);height:.5em}
+.quotecell blockquote{font-family:"Bodoni Moda",serif;font-style:italic;font-weight:500;
+  font-size:clamp(1.15rem,2.4vw,1.6rem);line-height:1.3}
+.quotecell cite{display:block;margin-top:16px;font-family:"Space Mono",monospace;font-style:normal;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.quotecell cite b{color:var(--ink)}
+
+/* ============ CLASSIFIEDS / CALL TO ACTION ============ */
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:0;margin-top:0}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr}}
+.notice{padding:26px 26px 26px 0}
+@media(max-width:760px){.notice{padding-right:0}}
+.notice .kicker{margin-bottom:10px}
+.notice h2{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(2rem,5.5vw,3.6rem);line-height:.92}
+.notice p{font-size:1rem;line-height:1.55;color:var(--ink-soft);margin-top:12px;max-width:44ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.ink-btn{font-family:"Space Mono",monospace;font-weight:700;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;text-decoration:none;padding:13px 20px;border:var(--rule) solid var(--ink);
+  background:var(--ink);color:var(--paper);transition:transform .12s ease, box-shadow .12s ease;
+  box-shadow:5px 5px 0 var(--ink)}
+.ink-btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--stamp)}
+.ink-btn--ghost{background:transparent;color:var(--ink);box-shadow:5px 5px 0 rgba(24,20,16,.25)}
+.ink-btn--ghost:hover{box-shadow:7px 7px 0 var(--stamp)}
+.ink-btn .ar{color:var(--stamp)}
+
+.classifieds{border-left:var(--rule) solid var(--ink);padding:26px 0 26px 26px}
+@media(max-width:760px){.classifieds{border-left:0;border-top:var(--rule) solid var(--ink);padding-left:0;margin-top:10px}}
+.classifieds h4{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;border-bottom:var(--rule) solid var(--ink);padding-bottom:6px;margin-bottom:12px}
+.classifieds ul{list-style:none;display:grid;gap:11px}
+.classifieds li{font-size:.9rem;line-height:1.45;padding-bottom:11px;border-bottom:var(--hair) dotted var(--ink)}
+.classifieds li:last-child{border-bottom:0}
+.classifieds li b{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--stamp);display:block;margin-bottom:2px}
+
+/* ============ COLOPHON / FOOTER ============ */
+.colophon{border-top:var(--beam) solid var(--ink);margin-top:30px;padding-top:14px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+.colophon b{color:var(--ink)}
+.colophon a{color:var(--stamp);text-decoration:none}
+
+/* ============ ENTRANCE CHOREOGRAPHY ============ */
+.r{opacity:0;transform:translateY(16px);animation:rise .9s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.d0{animation-delay:.05s}.d1{animation-delay:.18s}.d2{animation-delay:.3s}.d3{animation-delay:.42s}
+.d4{animation-delay:.54s}.d5{animation-delay:.66s}.d6{animation-delay:.78s}.d7{animation-delay:.9s}
+@media(prefers-reduced-motion:reduce){
+  .r{opacity:1;transform:none;animation:none}
+  .ticker__track{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ░░ crunchy newsprint grain (real inline SVG — renders everywhere) ░░ -->
+<svg class="crust" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <filter id="crustGrain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="0"/>
+      <feFuncG type="linear" slope="0"/>
+      <feFuncB type="linear" slope="0"/>
+      <feFuncA type="linear" slope="1.9" intercept="-0.55"/>
+    </feComponentTransfer>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#crustGrain)"/>
+</svg>
+<svg class="crust crust--coarse" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <filter id="crustCoarse">
+    <feTurbulence type="fractalNoise" baseFrequency="0.28" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope="0"/>
+      <feFuncG type="linear" slope="0"/>
+      <feFuncB type="linear" slope="0"/>
+      <feFuncA type="linear" slope="1.4" intercept="-0.62"/>
+    </feComponentTransfer>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#crustCoarse)"/>
+</svg>
+
+<div class="fold" aria-hidden="true"></div>
+
+<div class="sheet">
+
+  <!-- ░░ TOP FOLIO ░░ -->
+  <div class="folio r d0">
+    <span>Vol. <b>XXIII</b> · No. <b>59</b></span>
+    <span>Borana Conservancy · Laikipia · <b>Northern Kenya</b></span>
+    <span class="stamp-red">Silver Edition</span>
+  </div>
+  <hr class="rule rule--thick r d0" />
+
+  <!-- ░░ MASTHEAD ░░ -->
+  <header class="masthead">
+    <div class="flank flank--l r d1">
+      <h4>The Almanac</h4>
+      Dawn — 06:14<br/>
+      Dusk — 18:41<br/>
+      Wind — NE, light<br/>
+      Moon — <b>Waxing</b><br/>
+      Tracks — <b>Black rhino</b>
+    </div>
+    <div class="flank flank--r r d1">
+      <h4>In This Number</h4>
+      Walking Safaris<br/>
+      Rhino at First Light<br/>
+      Ornithology<br/>
+      Astronomy &amp; Skies<br/>
+      <b>Conservation</b>
+    </div>
+
+    <p class="masthead__over r d1">Established MMII · Printed on the Frontier</p>
+    <h1 class="masthead__title r d2">The Northern<br/><span class="swash">Frontier</span> Gazette</h1>
+    <hr class="rule rule--double r d2" style="margin-top:14px" />
+    <div class="masthead__sub r d3">
+      <span>Monday, First Light</span><span class="masthead__dot">✦</span>
+      <span>Price: One Shilling</span><span class="masthead__dot">✦</span>
+      <span>32,000 Wild Acres</span><span class="masthead__dot">✦</span>
+      <span>Tracked on Foot</span>
+    </div>
+  </header>
+
+  <!-- ░░ STOP PRESS TICKER ░░ -->
+  <div class="ticker r d3" aria-hidden="true">
+    <span class="ticker__label">Stop Press</span>
+    <div class="ticker__track">
+      <span>Walking Safaris</span><span><i>✦</i></span><span>Rhino Tracking</span><span><i>✦</i></span>
+      <span>Ornithology</span><span><i>✦</i></span><span>Astronomy</span><span><i>✦</i></span>
+      <span>Conservation</span><span><i>✦</i></span><span>The Big Five</span><span><i>✦</i></span>
+      <span>Walking Safaris</span><span><i>✦</i></span><span>Rhino Tracking</span><span><i>✦</i></span>
+      <span>Ornithology</span><span><i>✦</i></span><span>Astronomy</span><span><i>✦</i></span>
+      <span>Conservation</span><span><i>✦</i></span><span>The Big Five</span><span><i>✦</i></span>
+    </div>
+  </div>
+
+  <!-- ░░ LEAD STORY ░░ -->
+  <section class="lede">
+    <div class="lede__main">
+      <p class="kicker r d2">Front Page · Field Report</p>
+      <h2 class="headline r d3">One of <span class="red">Fifty&#8209;Nine</span><br/>Silver Guides<br/>in all <em>of Kenya</em></h2>
+      <p class="deck r d4">Nissa Ole Kinyaga leads guests into the wild heart of Borana at first light — tracking black rhino on foot, reading the bush he was raised in.</p>
+      <p class="byline mono r d4">By Our Correspondent &nbsp;·&nbsp; <b>Lengishu, Borana</b> &nbsp;·&nbsp; Dateline: Dawn</p>
+
+      <div class="cols r d5">
+        <p>Born in the Mukogodo Forest, a Laikipia Maasai of the Il Ngwesi, he was raised by the bush long before any classroom. His first post in conservation was as a radio signaller at Lewa Wildlife Conservancy — ears to the land, learning how people and wildlife might thrive as one.</p>
+        <p>He went on to Kenya Utalii College for his Advanced Tour Guiding Certificate, then kept going: ornithology, walking wild safaris, astronomy, first aid. In 2002 he turned full‑time. Today he guides at Lengishu, in Kenya's most successful rhino sanctuary, as one of just fifty‑nine Silver Guides in the country.</p>
+      </div>
+    </div>
+
+    <aside class="rail">
+      <figure class="plate r d4">
+        <div class="stamp-seal">Verified<br/><b>Silver</b>Guide</div>
+        <img src="images/nissa-portrait.jpg" alt="Nissa Ole Kinyaga at dawn on the Borana Conservancy" loading="eager" />
+        <figcaption class="plate__cap">Fig.&nbsp;1 — <b>Nissa</b> at dawn, Borana</figcaption>
+      </figure>
+
+      <div class="glance r d5">
+        <div class="glance__hd">At a Glance</div>
+        <dl>
+          <div><dt>Guiding since</dt><dd>2002</dd></div>
+          <div><dt>Wild acres</dt><dd>32,000</dd></div>
+          <div><dt>Silver Guides</dt><dd>59</dd></div>
+          <div><dt>Speciality</dt><dd class="sm">Rhino on foot</dd></div>
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ░░ THREE-COLUMN FIELD REPORT ░░ -->
+  <section class="deck-band">
+    <article class="report r d4">
+      <span class="report__no">01</span>
+      <h3>Tracking Rhino<br/>at First Light</h3>
+      <p>Walk with the anti‑poaching team at dawn and learn how black and white rhino are tracked, identified and protected. Ninety minutes to two hours, with a high chance of a sighting.</p>
+      <span class="tag mono">Signature Walk</span>
+    </article>
+    <article class="report r d5">
+      <span class="report__no">02</span>
+      <h3>Day &amp; Night<br/>Game Drives</h3>
+      <p>The Big Five by daylight; porcupine, honey badger and leopard once the dark comes down over the conservancy. Northern Kenya at every hour.</p>
+      <span class="tag mono">Dawn to Dusk</span>
+    </article>
+    <article class="report r d6">
+      <span class="report__no">03</span>
+      <h3>Walking, Horse<br/>&amp; the Stars</h3>
+      <p>Read the small details on foot, ride among giraffe with Mount Kenya beyond, then trace the southern skies after sundown with a trained eye.</p>
+      <span class="tag mono">The Slow Country</span>
+    </article>
+  </section>
+
+  <!-- ░░ DISPATCH STRIP ░░ -->
+  <section class="dispatch">
+    <figure class="plate r d4">
+      <img src="images/field-rhino-wild.jpg" alt="Black rhino in the wild, Borana" loading="lazy" />
+      <figcaption class="plate__cap">Fig.&nbsp;2 — <b>Rhino</b>, on foot</figcaption>
+    </figure>
+    <div class="quotecell r d5">
+      <span class="mark">“</span>
+      <blockquote>It's wonderful that I can provide for my family doing what I love — knowing my work has purpose, that I am making a difference every day.</blockquote>
+      <cite>— <b>Nissa Ole Kinyaga</b>, Silver Guide</cite>
+    </div>
+    <figure class="plate r d6">
+      <img src="images/gallery-8-nissa-dusk.jpg" alt="Nissa beside the Lengishu vehicle at dusk" loading="lazy" />
+      <figcaption class="plate__cap">Fig.&nbsp;3 — <b>Dusk</b> on Borana</figcaption>
+    </figure>
+  </section>
+
+  <!-- ░░ NOTICE / CALL & CLASSIFIEDS ░░ -->
+  <section class="foot-grid">
+    <div class="notice">
+      <p class="kicker r d4">Public Notice · Open Enquiries</p>
+      <h2 class="r d5">Come and walk<br/>the Frontier.</h2>
+      <p class="r d5">Tell me what moves you — rhino at dawn, a leopard at dusk, the southern stars — and I'll shape a journey across Borana around it.</p>
+      <div class="actions r d6">
+        <a class="ink-btn" href="https://www.lengishu.com/book-with-us/" target="_blank" rel="noopener">Enquire via Lengishu <span class="ar">→</span></a>
+        <a class="ink-btn ink-btn--ghost" href="index.html">Read the full story <span class="ar">→</span></a>
+      </div>
+    </div>
+
+    <aside class="classifieds r d6">
+      <h4>The Particulars</h4>
+      <ul>
+        <li><b>Based at</b>Lengishu, Borana Conservancy, Laikipia, Kenya</li>
+        <li><b>Disciplines</b>Walking safaris · rhino tracking · ornithology · astronomy · first aid</li>
+        <li><b>Always stops for</b>Leopards &amp; wild dogs — every time, without fail</li>
+        <li><b>Enquiries</b><a href="https://www.lengishu.com/book-with-us/" target="_blank" rel="noopener" style="color:var(--ink)">lengishu.com/book-with-us</a></li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- ░░ COLOPHON ░░ -->
+  <footer class="colophon">
+    <span><b>The Northern Frontier Gazette</b> — Printed on the bush, set in ink.</span>
+    <span>Maasai guide · conservationist · storyteller &nbsp;·&nbsp; <a href="index.html">Main Edition →</a></span>
+    <span>© <span id="yr"></span> · Est. MMII</span>
+  </footer>
+
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

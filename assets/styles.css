@@ -45,14 +45,17 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
   line-height:1.6;
-  /* warm gradient mesh — soft brown & sage blooms over beige */
+  /* crushed-then-flattened paper + warm gradient mesh over beige
+     (background only — text & photos stay crisp on top) */
   background:
+    url("../images/paper-crumple.jpg") center/cover,
     radial-gradient(38% 30% at 12% 14%, rgba(168,138,104,.28), transparent 60%),
     radial-gradient(34% 28% at 88% 10%, rgba(158,176,106,.20), transparent 60%),
     radial-gradient(42% 34% at 78% 62%, rgba(168,138,104,.22), transparent 62%),
     radial-gradient(40% 32% at 8% 78%, rgba(158,176,106,.14), transparent 60%),
     radial-gradient(50% 40% at 50% 100%, rgba(205,180,148,.30), transparent 70%),
     var(--beige);
+  background-blend-mode: multiply, normal, normal, normal, normal, normal, normal;
   background-attachment: fixed;
 }
 img{display:block;max-width:100%}
@@ -65,6 +68,7 @@ section{position:relative}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode:multiply;
 }
+
 .cursor{
   position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;
   border:1.5px solid var(--sage);z-index:9999;pointer-events:none;
@@ -128,6 +132,63 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 .nav__cta:hover{background:var(--sage);color:#1d2110!important}
 .nav__burger{display:none;flex-direction:column;gap:6px;background:none;border:0;cursor:pointer}
 .nav__burger span{width:26px;height:2px;background:var(--ink);transition:.3s}
+/* active section link */
+.nav__links a.active{color:var(--sage-deep)}
+.nav__links a:not(.nav__cta).active::after{width:100%}
+
+/* ── scroll progress bar ── */
+.scrollprog{position:fixed;top:0;left:0;right:0;height:3px;z-index:1100;
+  background:rgba(138,106,73,.16);pointer-events:none}
+.scrollprog span{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--sage-deep),var(--sage-bright),var(--brown-soft));
+  box-shadow:0 0 10px rgba(110,125,70,.5)}
+
+/* ── current-section pill ── */
+.sectionpill{
+  position:fixed;top:.85rem;left:50%;z-index:1101;
+  display:flex;align-items:center;gap:.6rem;
+  padding:.42rem .55rem .42rem .42rem;border-radius:100px;
+  background:rgba(43,38,32,.86);backdrop-filter:blur(14px) saturate(140%);
+  box-shadow:0 14px 34px -16px rgba(45,30,18,.7);
+  color:var(--cream);font-size:.82rem;font-weight:600;letter-spacing:.01em;white-space:nowrap;
+  transform:translate(-50%,-160%);opacity:0;transition:transform .5s var(--ease),opacity .4s var(--ease);
+  pointer-events:none;
+}
+.sectionpill.show{transform:translate(-50%,0);opacity:1}
+@media(max-width:720px){
+  .sectionpill{top:auto;bottom:1rem;transform:translate(-50%,180%)}
+  .sectionpill.show{transform:translate(-50%,0)}
+}
+.sectionpill__num{display:grid;place-items:center;min-width:26px;height:26px;padding:0 .35rem;
+  border-radius:100px;background:var(--sage);color:#1d2110;
+  font-family:var(--serif);font-weight:700;font-size:.82rem;font-variant-numeric:tabular-nums}
+.sectionpill__name{padding-right:.4rem}
+
+/* ── gazette cross-link band ── */
+.gazette-cta{background:var(--char);color:var(--cream);
+  padding:clamp(4rem,8vw,6.5rem) clamp(1.2rem,4vw,3rem)}
+.gazette-cta__inner{max-width:var(--maxw);margin:0 auto;text-align:center}
+.gazette-cta .eyebrow{color:var(--sage-bright);justify-content:center}
+.gazette-cta h2{margin:.4rem 0 1rem}
+.gazette-cta__lede{max-width:48ch;margin:0 auto 2.4rem;color:var(--cream-dim);
+  font-size:clamp(1rem,1.5vw,1.18rem)}
+.gazette-cta__lede em{font-family:var(--serif);font-style:italic;color:var(--cream)}
+.gazette-btn{
+  display:inline-flex;align-items:stretch;gap:0;text-decoration:none;color:#181410;
+  background:var(--cream);border:2px solid var(--cream);
+  box-shadow:8px 8px 0 rgba(158,176,106,.55);
+  transition:transform .18s var(--ease),box-shadow .18s var(--ease);overflow:hidden;
+}
+.gazette-btn:hover{transform:translate(-3px,-3px);box-shadow:12px 12px 0 var(--sage-bright)}
+.gazette-btn__rule{width:8px;background:repeating-linear-gradient(0deg,#181410 0 5px,transparent 5px 9px)}
+.gazette-btn__body{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  text-align:left;padding:.85rem 1.3rem;line-height:1.15}
+.gazette-btn__k{font-family:var(--serif);font-weight:700;font-size:clamp(1.05rem,2.2vw,1.45rem)}
+.gazette-btn__t{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:#6f543a;margin-top:.25rem;font-weight:700}
+.gazette-btn__ar{display:grid;place-items:center;width:56px;font-size:1.5rem;
+  background:#181410;color:var(--cream);transition:background .18s}
+.gazette-btn:hover .gazette-btn__ar{background:var(--sage-deep)}
 
 /* ════════ HERO ════════ */
 .hero{
@@ -240,7 +301,7 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 }
 
 /* ════════ JOURNEY ════════ */
-.journey{background:var(--beige-deep);padding:clamp(5rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
+.journey{background:url("../images/paper-crumple.jpg") center/cover fixed,var(--beige-deep);background-blend-mode:multiply,normal;padding:clamp(5rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
 .journey__head{max-width:var(--maxw);margin:0 auto 3.5rem}
 .journey__head h2{max-width:16ch}
 .timeline{
@@ -254,6 +315,34 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 .tl__yr{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--sage-deep)}
 .tl h3{font-size:1.25rem;margin:.5rem 0 .6rem;font-weight:600}
 .tl p{font-size:.9rem;color:var(--ink-soft)}
+
+/* ── little fauna walking the timeline ── */
+.timeline-wrap{position:relative}
+.tl-fauna{position:absolute;left:0;right:0;top:0;height:0;z-index:3;pointer-events:none}
+.crit{position:absolute;top:46px;left:var(--x);transform:translate(-50%,-100%);
+  filter:drop-shadow(0 3px 4px rgba(43,38,32,.18))}
+.crit__svg{display:block;transform-box:fill-box;transform-origin:50% 100%;
+  animation:critBob 3s ease-in-out infinite;animation-delay:var(--delay,0s)}
+/* per-creature size + motion flavour */
+.crit--bird .crit__svg{width:38px;animation-name:critHop;animation-duration:1.9s}
+.crit--acacia .crit__svg{width:62px;animation-name:critSway;animation-duration:5s}
+.crit--giraffe .crit__svg{width:42px;animation-name:critBob;animation-duration:3.4s}
+.crit--ele .crit__svg{width:64px;animation-name:critSway;animation-duration:3.8s}
+.crit--rhino .crit__svg{width:70px;animation-name:critBob;animation-duration:2.7s}
+/* moving parts — ears & tails flutter */
+.part{transform-box:fill-box}
+.part--ear{transform-origin:65% 25%;animation:wiggle 1.5s ease-in-out infinite}
+.part--tail{transform-origin:100% 0;animation:wiggle 1.2s ease-in-out infinite}
+.crit:hover .crit__svg{animation-duration:.5s}
+
+@keyframes critBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes critSway{0%,100%{transform:rotate(-2.6deg)}50%{transform:rotate(2.6deg)}}
+@keyframes critHop{0%,100%{transform:translateY(0) scaleY(1)}
+  30%{transform:translateY(-9px) scaleY(1.05)}55%{transform:translateY(0) scaleY(.95)}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}50%{transform:rotate(-11deg)}}
+@media(prefers-reduced-motion:reduce){
+  .crit__svg,.part{animation:none}
+}
 
 /* ════════ FIELD ════════ */
 .field{max-width:var(--maxw);margin:0 auto;padding:clamp(5rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
@@ -291,7 +380,7 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 .card__icon{width:64px;height:40px;color:var(--sage-bright);margin-top:1.6rem;opacity:.9}
 
 /* ════════ GALLERY ════════ */
-.gallery{background:var(--beige-deep);padding:clamp(5rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
+.gallery{background:url("../images/paper-crumple.jpg") center/cover fixed,var(--beige-deep);background-blend-mode:multiply,normal;padding:clamp(5rem,9vw,8rem) clamp(1.2rem,4vw,3rem)}
 .gallery__head{max-width:var(--maxw);margin:0 auto 3rem}
 .gallery__head h2{margin:.5rem 0 1rem}
 .gallery__sub{color:var(--ink-soft);font-size:1.05rem;max-width:44ch}
@@ -360,7 +449,7 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 
 /* ════════ CERTS ════════ */
 .certs{
-  background:var(--beige);color:var(--ink);
+  background:url("../images/paper-crumple.jpg") center/cover fixed,var(--beige);background-blend-mode:multiply,normal;color:var(--ink);
   display:grid;grid-template-columns:1fr;gap:clamp(1.5rem,4vw,2.5rem);
   padding:clamp(5rem,9vw,8rem) clamp(1.2rem,4vw,3rem);
   max-width:var(--maxw);margin:0 auto;align-items:start;
@@ -488,6 +577,7 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
   .story{grid-template-columns:1fr}
   .timeline{grid-template-columns:1fr;gap:0}
   .timeline::before{display:none}
+  .tl-fauna{display:none}
   .tl{padding-top:0;padding-left:32px;padding-bottom:2rem}
   .tl::before{top:4px;left:0}
   .tl::after{content:"";position:absolute;top:4px;left:8px;width:2px;height:100%;background:var(--brown-soft);z-index:-1}
