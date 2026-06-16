@@ -38,7 +38,7 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip}
 body{
   font-family:var(--sans);
   color:var(--ink);
@@ -130,8 +130,11 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 .nav__links a:not(.nav__cta):hover::after{width:100%}
 .nav__cta{background:var(--char);color:var(--cream)!important;padding:.55rem 1.2rem;border-radius:100px;transition:background .35s}
 .nav__cta:hover{background:var(--sage);color:#1d2110!important}
-.nav__burger{display:none;flex-direction:column;gap:6px;background:none;border:0;cursor:pointer}
-.nav__burger span{width:26px;height:2px;background:var(--ink);transition:.3s}
+.nav__burger{display:none;flex-direction:column;gap:6px;background:none;border:0;cursor:pointer;
+  padding:11px;margin:-11px}                       /* ≥44px tap target */
+.nav__burger span{width:26px;height:2px;background:var(--ink);transition:transform .3s var(--ease),opacity .3s}
+.nav__burger.is-open span:nth-child(1){transform:translateY(4px) rotate(45deg)}
+.nav__burger.is-open span:nth-child(2){transform:translateY(-4px) rotate(-45deg)}
 /* active section link */
 .nav__links a.active{color:var(--sage-deep)}
 .nav__links a:not(.nav__cta).active::after{width:100%}
@@ -192,11 +195,12 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 
 /* ════════ HERO ════════ */
 .hero{
-  min-height:100vh;display:grid;align-items:center;
+  min-height:100vh;min-height:100svh;display:grid;align-items:center;
   grid-template-columns:1.1fr .9fr;gap:3rem;
   max-width:var(--maxw);margin:0 auto;
   padding:8rem clamp(1.2rem,4vw,3rem) 4rem;
   position:relative;
+  overflow-x:clip;            /* contain decorative blobs — no page-wide horizontal scroll */
 }
 .hero__inner{position:relative;z-index:3}
 .hero__title{
@@ -555,6 +559,10 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 .cform__note.err{color:#fff;background:rgba(178,74,52,.6);border-radius:100px;padding:.55rem 1rem}
 @media(max-width:880px){
   .contact__inner{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  /* 16px prevents iOS Safari from auto-zooming when a field is focused */
+  .cfield input,.cfield select,.cfield textarea{font-size:16px}
 }
 @media(max-width:480px){
   .cform__row{grid-template-columns:1fr}

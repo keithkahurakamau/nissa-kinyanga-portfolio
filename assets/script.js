@@ -17,17 +17,27 @@
   /* mobile menu */
   const burger = $('.nav__burger');
   const links = $('.nav__links');
-  if (burger) burger.addEventListener('click', () => {
-    const open = links.style.display === 'flex';
-    links.style.display = open ? '' : 'flex';
-    links.style.cssText = open ? '' :
-      'display:flex;position:fixed;inset:64px 1rem auto 1rem;flex-direction:column;gap:1.2rem;' +
-      'background:rgba(236,226,210,.96);backdrop-filter:blur(18px);padding:1.6rem;border-radius:20px;' +
-      'box-shadow:0 30px 60px -20px rgba(45,30,18,.4);z-index:999';
-  });
+  const MENU_OPEN_CSS =
+    'display:flex;position:fixed;inset:64px 1rem auto 1rem;flex-direction:column;gap:1.2rem;' +
+    'background:rgba(236,226,210,.96);backdrop-filter:blur(18px);padding:1.6rem;border-radius:20px;' +
+    'box-shadow:0 30px 60px -20px rgba(45,30,18,.4);z-index:999';
+  const setMenu = (open) => {
+    links.style.cssText = open ? MENU_OPEN_CSS : '';
+    if (burger) {
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.classList.toggle('is-open', open);
+    }
+  };
+  if (burger) {
+    burger.setAttribute('aria-expanded', 'false');
+    burger.addEventListener('click', () => setMenu(links.style.display !== 'flex'));
+  }
   $$('.nav__links a').forEach(a => a.addEventListener('click', () => {
-    if (window.innerWidth <= 720) links.style.cssText = '';
+    if (window.innerWidth <= 720) setMenu(false);
   }));
+  /* close the open mobile menu on Escape or when resizing back to desktop */
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 720) setMenu(false); }, { passive: true });
 
   /* scroll progress bar + current-section overlay */
   const progBar = $('#scrollProgBar');
