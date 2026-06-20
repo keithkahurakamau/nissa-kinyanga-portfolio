@@ -91,9 +91,10 @@ section{position:relative}
 }
 .btn__arrow{transition:transform .4s var(--ease)}
 .btn:hover .btn__arrow{transform:translateX(5px)}
+button.btn{font-family:inherit;cursor:pointer}
 .btn--primary{background:var(--sage);color:#1d2110;box-shadow:0 10px 30px -10px rgba(110,125,70,.7)}
 .btn--primary:hover{background:var(--sage-bright);transform:translateY(-3px)}
-.btn--ghost{border:1.5px solid var(--brown);color:var(--brown-deep)}
+.btn--ghost{background:transparent;border:1.5px solid var(--brown);color:var(--brown-deep)}
 .btn--ghost:hover{background:var(--brown);color:var(--cream);transform:translateY(-3px)}
 
 h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.04;letter-spacing:-.015em}
@@ -102,6 +103,10 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 /* ── reveal ── */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
 .reveal.in{opacity:1;transform:none}
+
+/* ── scroll parallax (JS sets --py on [data-parallax] elements; never combine with .reveal) ── */
+[data-parallax]{transform:translate3d(0,var(--py,0px),0);will-change:transform}
+@media(prefers-reduced-motion:reduce){ [data-parallax]{transform:none} }
 
 /* ════════ NAV ════════ */
 .nav{
@@ -220,8 +225,8 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
   background:radial-gradient(circle at 60% 40%,var(--sage-bright),var(--sage-deep));opacity:.28;
   animation:morph 20s var(--ease) infinite reverse}
 @keyframes morph{
-  0%,100%{border-radius:46% 54% 60% 40%/55% 48% 52% 45%;transform:rotate(0)}
-  50%{border-radius:60% 40% 42% 58%/45% 58% 42% 55%;transform:rotate(12deg) scale(1.05)}
+  0%,100%{border-radius:46% 54% 60% 40%/55% 48% 52% 45%;transform:translateY(var(--py,0px)) rotate(0)}
+  50%{border-radius:60% 40% 42% 58%/45% 58% 42% 55%;transform:translateY(var(--py,0px)) rotate(12deg) scale(1.05)}
 }
 .hero__light{
   position:absolute;inset:0;z-index:0;pointer-events:none;
@@ -245,7 +250,7 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
   border:1px solid rgba(255,255,255,.18);
 }
 .hero__badge{
-  position:absolute;left:-2.2rem;bottom:2rem;z-index:5;
+  position:absolute;left:-2.2rem;bottom:4.2rem;z-index:5;
   display:flex;align-items:center;gap:.7rem;
   background:rgba(236,226,210,.6);backdrop-filter:blur(16px) saturate(150%);
   border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:.9rem 1.2rem;
@@ -552,7 +557,8 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 .contact__details li{display:flex;flex-direction:column;color:var(--cream);font-size:.98rem;
   border-top:1px solid rgba(246,239,226,.25);padding-top:.8rem}
 .contact__details span{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:#3a3015;margin-bottom:.2rem}
-.contact__details a{color:var(--cream);text-decoration:underline;text-underline-offset:3px}
+.contact__details a{color:var(--cream);text-decoration:underline;text-underline-offset:3px;width:max-content;max-width:100%}
+.contact__details a+a{margin-top:.3rem}
 .contact__actions{display:flex;gap:1rem;flex-wrap:wrap}
 .contact .btn--ghost{border-color:var(--cream);color:var(--cream)}
 .contact .btn--ghost:hover{background:var(--cream);color:var(--brown-deep)}
@@ -583,7 +589,8 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
   outline:none;border-color:var(--sage-bright);background:rgba(33,30,26,.4);
   box-shadow:0 0 0 3px rgba(158,176,106,.25)}
 .cfield.invalid input,.cfield.invalid textarea,.cfield.invalid select{border-color:#c97a5e;box-shadow:0 0 0 3px rgba(201,122,94,.22)}
-.cform__submit{justify-content:center;margin-top:.3rem}
+.cform__actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.3rem}
+.cform__actions .btn{flex:1 1 auto;justify-content:center}
 .cform__submit:disabled{opacity:.65;cursor:wait}
 .cform__note{font-size:.9rem;color:var(--cream);min-height:1.2em;text-align:center;font-weight:600}
 .cform__note.ok{color:#0f1c06;background:var(--sage-bright);border-radius:100px;padding:.55rem 1rem}
@@ -638,4 +645,89 @@ h2{font-size:clamp(2.1rem,5vw,4rem);font-weight:400}
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
+}
+
+/* ════════ REVIEWS · STARS ════════ */
+.quote__stars{color:var(--sage-deep);letter-spacing:.12em;font-size:1rem;margin-bottom:.5rem;line-height:1}
+.quote--accent .quote__stars{color:#3a4a16}
+.words__summary{display:flex;align-items:center;gap:.7rem;margin-top:1.2rem;flex-wrap:wrap}
+.words__summary .sum__stars{color:var(--sage-deep);letter-spacing:.1em;font-size:1.15rem;line-height:1}
+.words__summary .sum__txt{font-size:.92rem;color:var(--ink-soft);font-weight:600}
+.words__summary .sum__txt b{color:var(--ink);font-family:var(--serif);font-size:1.1rem;font-weight:600;margin-right:.15rem}
+.words__summary--light .sum__txt{color:var(--cream-dim)}
+.words__summary--light .sum__txt b{color:var(--cream)}
+.words__summary--light .sum__stars{color:var(--sage-bright)}
+.words__actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2.4rem}
+
+/* ════════ MODAL (all reviews + review form) ════════ */
+.modal{position:fixed;inset:0;z-index:10001;display:flex;align-items:center;justify-content:center;
+  background:rgba(24,19,14,.92);backdrop-filter:blur(10px);padding:4vw;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.modal.open{opacity:1;visibility:visible}
+.modal__panel{position:relative;background:var(--char-card);color:var(--cream);
+  border:1px solid rgba(246,239,226,.16);border-radius:24px;
+  width:min(760px,100%);max-height:88vh;overflow:auto;
+  padding:clamp(1.6rem,3vw,2.6rem);box-shadow:0 50px 100px -40px rgba(0,0,0,.8);
+  transform:translateY(18px) scale(.98);transition:transform .45s var(--ease)}
+.modal__panel--sm{width:min(560px,100%)}
+.modal.open .modal__panel{transform:none}
+.modal__close{position:absolute;top:1rem;right:1rem;width:42px;height:42px;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(236,226,210,.16);color:var(--cream);font-size:1.6rem;line-height:1;z-index:2;transition:background .3s}
+.modal__close:hover{background:var(--sage);color:#1d2110}
+.modal__head{margin-bottom:1.2rem;padding-right:2.4rem}
+.modal__head .eyebrow{color:var(--sage-bright)}
+.modal__head h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.6rem,3.4vw,2.3rem);margin:.3rem 0 .2rem;color:var(--cream)}
+.modal__lede{color:var(--cream-dim);font-size:.98rem;margin-top:.6rem;max-width:46ch;line-height:1.5}
+.modal__body{display:grid}
+.modal__foot{margin-top:1.6rem;display:flex;justify-content:flex-end}
+.modal .btn--ghost{background:transparent;border-color:var(--cream);color:var(--cream)}
+.modal .btn--ghost:hover{background:var(--cream);color:var(--brown-deep)}
+
+/* WhatsApp number chooser */
+.wa-choice{display:grid;gap:.8rem}
+.wa-num{width:100%;flex-direction:column;align-items:flex-start;gap:.1rem;padding:.95rem 1.3rem;text-align:left}
+.wa-num__k{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;opacity:.78}
+.wa-num strong{font-family:var(--serif);font-size:1.25rem;font-weight:600;letter-spacing:.01em}
+
+/* a single review row inside the all-reviews modal */
+.rev{padding:1.15rem 0;border-top:1px solid rgba(246,239,226,.14)}
+.rev:first-child{border-top:0;padding-top:.2rem}
+.rev__stars{color:var(--sage-bright);letter-spacing:.12em;font-size:.95rem;margin-bottom:.4rem;line-height:1}
+.rev__text{color:var(--cream);font-size:1rem;line-height:1.55}
+.rev__by{margin-top:.55rem;font-size:.82rem;color:var(--cream-dim);letter-spacing:.04em}
+.rev__by b{font-family:var(--serif);color:var(--cream);font-weight:500;margin-right:.45rem;letter-spacing:0}
+
+/* star rating input */
+.stars-input{display:inline-flex;gap:.25rem}
+.stars-input .star{background:none;border:0;cursor:pointer;font-size:1.85rem;line-height:1;padding:0 .05rem;
+  color:rgba(246,239,226,.26);transition:color .15s,transform .15s}
+.stars-input .star:hover{transform:translateY(-2px)}
+.stars-input .star.on{color:var(--sage-bright)}
+.cfield.invalid .stars-input .star:not(.on){color:rgba(201,122,94,.55)}
+
+/* ════════ EXIT-INTENT REVIEW PROMPT ════════ */
+.revprompt{position:fixed;right:1.2rem;bottom:1.2rem;z-index:9998;width:min(330px,calc(100vw - 2.4rem));
+  background:var(--char-card);color:var(--cream);border:1px solid rgba(246,239,226,.16);border-radius:20px;
+  padding:1.3rem 1.3rem 1.4rem;box-shadow:0 30px 60px -24px rgba(0,0,0,.7);
+  transform:translateY(150%);opacity:0;visibility:hidden;
+  transition:transform .55s var(--ease),opacity .4s,visibility .4s}
+.revprompt.show{transform:none;opacity:1;visibility:visible}
+.revprompt__x{position:absolute;top:.6rem;right:.7rem;width:30px;height:30px;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(246,239,226,.12);color:var(--cream);font-size:1.2rem;line-height:1;transition:background .3s}
+.revprompt__x:hover{background:var(--sage);color:#1d2110}
+.revprompt__stars{color:var(--sage-bright);letter-spacing:.14em;font-size:1rem;margin-bottom:.5rem}
+.revprompt__t{font-family:var(--serif);font-size:1.25rem;color:var(--cream);margin-bottom:.3rem}
+.revprompt__s{font-size:.88rem;color:var(--cream-dim);line-height:1.45;margin-bottom:1rem}
+.revprompt__cta{width:100%;justify-content:center}
+
+/* dark native calendar / date inputs match the form theme */
+.cfield input[type="date"]{color-scheme:dark}
+.cfield input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(.85);cursor:pointer;opacity:.8}
+.cfield input[type="date"]::-webkit-calendar-picker-indicator:hover{opacity:1}
+
+@media(max-width:560px){
+  .revprompt{right:.8rem;left:.8rem;bottom:.8rem;width:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .modal__panel,.revprompt{transition:opacity .3s,visibility .3s}
 }

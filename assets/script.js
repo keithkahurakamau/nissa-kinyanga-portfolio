@@ -205,12 +205,50 @@
     }, { passive: true });
   }
 
+  /* ═══ shared modal system + WhatsApp number chooser ═══ */
+  const WA_MAIN = '254707415444';   // primary — pops out first
+  const WA_ALT = '254722449514';    // secondary
+  let lastModalFocus = null;
+  const openModal = (m) => {
+    if (!m) return;
+    lastModalFocus = document.activeElement;
+    m.classList.add('open'); m.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+    const f = m.querySelector('input,textarea,button'); if (f) setTimeout(() => f.focus(), 60);
+  };
+  const closeModal = (m) => {
+    if (!m) return;
+    m.classList.remove('open'); m.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+    if (lastModalFocus && lastModalFocus.focus) lastModalFocus.focus();
+  };
+  $$('.modal').forEach((m) => {
+    const x = $('.modal__close', m); if (x) x.addEventListener('click', () => closeModal(m));
+    m.addEventListener('click', (e) => { if (e.target === m) closeModal(m); });
+  });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') $$('.modal.open').forEach(closeModal); });
+
+  /* WhatsApp chooser — lets the visitor pick either number, prefilled with the message */
+  const waModal = $('#waModal');
+  let waText = '';
+  const openWhatsApp = (text) => {
+    waText = text || '';
+    if (waModal) openModal(waModal);
+    else window.open('https://wa.me/' + WA_MAIN + (waText ? '?text=' + encodeURIComponent(waText) : ''), '_blank', 'noopener');
+  };
+  if (waModal) $$('.wa-num', waModal).forEach((b) => b.addEventListener('click', () => {
+    window.open('https://wa.me/' + b.dataset.wa + (waText ? '?text=' + encodeURIComponent(waText) : ''), '_blank', 'noopener');
+    closeModal(waModal);
+  }));
+  const waCta = $('#waCta');
+  if (waCta) waCta.addEventListener('click', (e) => { e.preventDefault(); openWhatsApp("Hello Nissa, I'd love to plan a safari with you."); });
+
   /* contact form */
   const form = $('#cform');
   if (form) {
     const note = $('#cformNote');
     const submit = $('.cform__submit', form);
-    const TO = 'bookings@lengishu.com'; // swap for Nissa's address or a form endpoint
+    const TO = 'nissasafaris254@gmail.com';
 
     const setNote = (msg, cls) => { note.textContent = msg; note.className = 'cform__note' + (cls ? ' ' + cls : ''); };
     const fieldOf = (el) => el.closest('.cfield');
@@ -220,8 +258,8 @@
       el.addEventListener('input', () => fieldOf(el) && fieldOf(el).classList.remove('invalid'));
     });
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    // validate (email optional — only checked when provided), then send via the chosen channel
+    const send = (channel) => {
       const data = Object.fromEntries(new FormData(form).entries());
       let ok = true;
       const fail = (name) => {
@@ -230,30 +268,38 @@
         ok = false;
       };
       if (!data.name || !data.name.trim()) fail('name');
-      if (!validEmail(data.email || '')) fail('email');
+      if (data.email && !validEmail(data.email)) fail('email');
       if (!data.message || data.message.trim().length < 10) fail('message');
 
-      if (!ok) { setNote('Please fill in your name, a valid email, and a short message.', 'err'); return; }
+      if (!ok) { setNote('Please add your name and a short message (and a valid email if you include one).', 'err'); return; }
 
-      submit.disabled = true;
-      setNote('Opening your email app…', '');
-
-      const subject = 'Safari enquiry from ' + data.name;
-      const body =
+      const first = data.name.split(' ')[0];
+      const lines =
         'Name: ' + data.name + '\n' +
-        'Email: ' + data.email + '\n' +
-        'Travel dates: ' + (data.dates || 'flexible') + '\n' +
+        'Email: ' + (data.email || 'not given') + '\n' +
+        'Travel dates: ' + ((data.arrive || data.depart) ? ((data.arrive || '?') + ' to ' + (data.depart || '?')) : 'flexible') + '\n' +
         'Interested in: ' + (data.interest || 'open to suggestions') + '\n\n' +
         data.message;
-      const mailto = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 
-      setTimeout(() => {
+      submit.disabled = true;
+      if (channel === 'whatsapp') {
+        setNote('Choose a WhatsApp number…', '');
+        openWhatsApp('Safari enquiry\n\n' + lines);
+      } else {
+        setNote('Opening your email app…', '');
+        const mailto = 'mailto:' + TO +
+          '?subject=' + encodeURIComponent('Safari enquiry from ' + data.name) +
+          '&body=' + encodeURIComponent(lines);
         window.location.href = mailto;
-        setNote('Thank you, ' + data.name.split(' ')[0] + '. Your message is ready to send from your email app.', 'ok');
-        form.reset();
-        submit.disabled = false;
-      }, 400);
-    });
+        setNote('Thank you, ' + first + '. Your message is ready to send from your email app.', 'ok');
+      }
+      form.reset();
+      submit.disabled = false;
+    };
+
+    form.addEventListener('submit', (e) => { e.preventDefault(); send('whatsapp'); });
+    const emailBtn = $('.cform__email', form);
+    if (emailBtn) emailBtn.addEventListener('click', () => send('email'));
   }
 
   /* photo frames: load real image if present, else keep designed art */
@@ -268,4 +314,172 @@
     };
     img.src = src;
   });
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ═══ scroll parallax (drives --py on [data-parallax]) ═══ */
+  const parallaxEls = $$('[data-parallax]');
+  if (parallaxEls.length && !reduced) {
+    let plxTick = false;
+    const runParallax = () => {
+      const vh = window.innerHeight;
+      parallaxEls.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.bottom < -vh || rect.top > vh * 2) return;       // skip off-screen
+        const off = (rect.top + rect.height / 2 - vh / 2) / vh;   // ~ -1 (above) .. 1 (below)
+        const f = parseFloat(el.dataset.parallax) || 0.1;
+        el.style.setProperty('--py', (-off * f * 100).toFixed(1) + 'px');
+      });
+      plxTick = false;
+    };
+    window.addEventListener('scroll', () => { if (!plxTick) { requestAnimationFrame(runParallax); plxTick = true; } }, { passive: true });
+    window.addEventListener('resize', runParallax, { passive: true });
+    runParallax();
+  }
+
+  /* ═══ Reviews system ═══ */
+  const reviewsGrid = $('#reviewsGrid');
+  if (reviewsGrid) {
+    /* === Curated reviews ===
+       To publish a new (approved) review, add a line below.
+       r = rating 1–5 · f = show in the main grid · a = author · p = place · t = text */
+    const REVIEWS = [
+      { r: 5, f: true, a: 'Safari Guests', p: 'Borana Conservancy', t: "Nissa grew up in the community neighbouring Borana and knows the area like the back of his hand. Tracking rhino at first light with him was the most profound thing we have ever done on safari." },
+      { r: 5, f: true, a: 'Conservation Safari Review', p: 'Northern Kenya', t: "He educates you out in the field, showing endangered species and how their habitats are preserved. You leave understanding conservation, not just having watched it." },
+      { r: 5, f: true, a: 'Luxury Safari Journal', p: 'East Africa', t: "A Silver Guide is rare for a reason. Nissa's calm, his eye for a leopard, his stories under the stars. This is guiding at world-class level." }
+    ];
+    const MAX_FEATURED = 3;
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const stars = (n) => { n = Math.max(0, Math.min(5, Math.round(n))); return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n); };
+    const byBest = (a, b) => (b.r - a.r) || ((b.f ? 1 : 0) - (a.f ? 1 : 0));
+
+    const all = REVIEWS.slice();
+    const featuredPool = all.filter((r) => r.f).sort(byBest);
+    const featured = (featuredPool.length ? featuredPool : all.slice().sort(byBest)).slice(0, MAX_FEATURED);
+
+    /* rating summary */
+    const avg = all.reduce((s, r) => s + r.r, 0) / (all.length || 1);
+    const sumHTML = '<span class="sum__stars" aria-hidden="true">' + stars(avg) + '</span>' +
+      '<span class="sum__txt"><b>' + avg.toFixed(1) + '</b> from ' + all.length + ' review' + (all.length === 1 ? '' : 's') + '</span>';
+    const summary = $('#reviewSummary');
+    if (summary) { summary.innerHTML = sumHTML; summary.hidden = false; }
+    const allSummary = $('#allReviewsSummary');
+    if (allSummary) allSummary.innerHTML = sumHTML;
+
+    /* featured → grid */
+    reviewsGrid.innerHTML = featured.map((r, i) =>
+      '<figure class="quote reveal' + (i === 1 ? ' quote--accent' : '') + '">' +
+        '<div class="quote__stars" aria-label="' + r.r + ' out of 5">' + stars(r.r) + '</div>' +
+        '<p>“' + esc(r.t) + '”</p>' +
+        '<figcaption><strong>' + esc(r.a) + '</strong><span>' + esc(r.p) + '</span></figcaption>' +
+      '</figure>').join('');
+    $$('.reveal', reviewsGrid).forEach((el) => io.observe(el));
+
+    /* all → modal list */
+    const allList = $('#allReviewsList');
+    if (allList) allList.innerHTML = all.slice().sort(byBest).map((r) =>
+      '<article class="rev">' +
+        '<div class="rev__stars" aria-label="' + r.r + ' out of 5">' + stars(r.r) + '</div>' +
+        '<p class="rev__text">“' + esc(r.t) + '”</p>' +
+        '<p class="rev__by"><b>' + esc(r.a) + '</b>' + esc(r.p) + '</p>' +
+      '</article>').join('');
+
+    /* modal triggers (open/close helpers are shared, defined earlier) */
+    const allModal = $('#allReviewsModal');
+    const formModal = $('#reviewFormModal');
+
+    const viewBtn = $('#viewAllReviews'); if (viewBtn) viewBtn.addEventListener('click', () => openModal(allModal));
+    const leaveBtn = $('#leaveReview'); if (leaveBtn) leaveBtn.addEventListener('click', () => openModal(formModal));
+    $$('[data-open-review]').forEach((b) => b.addEventListener('click', () => { closeModal(allModal); openModal(formModal); }));
+
+    /* star-rating input */
+    const starsInput = $('#starsInput');
+    const ratingField = formModal && formModal.querySelector('[name="rating"]');
+    let rating = 0;
+    if (starsInput) {
+      const starBtns = $$('.star', starsInput);
+      const paint = (val) => starBtns.forEach((b, i) => { b.classList.toggle('on', i < val); b.setAttribute('aria-checked', String(i + 1 === val)); });
+      starBtns.forEach((b) => {
+        const v = Number(b.dataset.val);
+        b.addEventListener('mouseenter', () => paint(v));
+        b.addEventListener('focus', () => paint(v));
+        b.addEventListener('click', () => { rating = v; if (ratingField) ratingField.value = String(v); paint(v); starsInput.closest('.cfield').classList.remove('invalid'); });
+      });
+      starsInput.addEventListener('mouseleave', () => paint(rating));
+      starsInput.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') rating = Math.min(5, rating + 1);
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') rating = Math.max(1, rating - 1);
+        else return;
+        e.preventDefault(); if (ratingField) ratingField.value = String(rating); paint(rating);
+      });
+    }
+
+    /* submit a review → moderated, sent to Nissa via WhatsApp / email */
+    const rform = $('#rform');
+    if (rform) {
+      const note = $('#rformNote');
+      const setNote = (msg, cls) => { note.textContent = msg; note.className = 'cform__note' + (cls ? ' ' + cls : ''); };
+      const fieldOf = (el) => el.closest('.cfield');
+      const TO = 'nissasafaris254@gmail.com';
+
+      rform.querySelectorAll('input,textarea').forEach((el) => {
+        el.addEventListener('input', () => fieldOf(el) && fieldOf(el).classList.remove('invalid'));
+      });
+
+      const sendReview = (channel) => {
+        const data = Object.fromEntries(new FormData(rform).entries());
+        let ok = true;
+        const fail = (name) => { const el = rform.querySelector('[name="' + name + '"]'); if (el && fieldOf(el)) fieldOf(el).classList.add('invalid'); ok = false; };
+        if (!data.name || !data.name.trim()) fail('name');
+        if (!data.text || data.text.trim().length < 10) fail('text');
+        if (!rating) { ok = false; if (starsInput) starsInput.closest('.cfield').classList.add('invalid'); }
+        if (!ok) { setNote('Please add your name, a rating, and a few words.', 'err'); return; }
+
+        const lines = 'New review for Nissa\n\n' +
+          'Name: ' + data.name + '\n' +
+          (data.place ? 'From: ' + data.place + '\n' : '') +
+          'Rating: ' + rating + '/5 (' + stars(rating) + ')\n\n' +
+          data.text;
+
+        if (channel === 'whatsapp') {
+          setNote('Choose a WhatsApp number…', '');
+          closeModal(formModal);
+          openWhatsApp(lines);
+        } else {
+          setNote('Opening your email app…', '');
+          window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent('New review for Nissa from ' + data.name) + '&body=' + encodeURIComponent(lines);
+          setNote('Thank you, ' + data.name.split(' ')[0] + '. Nissa will add your review once it reaches him.', 'ok');
+        }
+        rform.reset(); rating = 0; if (ratingField) ratingField.value = '';
+        if (starsInput) $$('.star', starsInput).forEach((b) => { b.classList.remove('on'); b.setAttribute('aria-checked', 'false'); });
+      };
+
+      rform.addEventListener('submit', (e) => { e.preventDefault(); sendReview('whatsapp'); });
+      const rEmail = $('.rform__email', rform);
+      if (rEmail) rEmail.addEventListener('click', () => sendReview('email'));
+    }
+
+    /* exit-intent review prompt (once per visitor) */
+    const prompt = $('#reviewPrompt');
+    let promptSeen = false;
+    try { promptSeen = !!localStorage.getItem('nk_review_prompt'); } catch (_) {}
+    if (prompt && !promptSeen) {
+      let shown = false;
+      const remember = () => { try { localStorage.setItem('nk_review_prompt', '1'); } catch (_) {} };
+      const hide = () => { prompt.classList.remove('show'); prompt.setAttribute('aria-hidden', 'true'); };
+      const reveal = () => { if (shown) return; shown = true; remember(); prompt.classList.add('show'); prompt.setAttribute('aria-hidden', 'false'); };
+
+      $('.revprompt__x', prompt).addEventListener('click', hide);
+      $('.revprompt__cta', prompt).addEventListener('click', hide);
+
+      if (matchMedia('(hover:hover)').matches) {
+        document.addEventListener('mouseout', (e) => { if (!e.relatedTarget && e.clientY <= 0) reveal(); });
+      }
+      window.addEventListener('scroll', () => {
+        const doc = document.documentElement;
+        if ((window.scrollY + window.innerHeight) / doc.scrollHeight > 0.7) reveal();
+      }, { passive: true });
+    }
+  }
 })();
