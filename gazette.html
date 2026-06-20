@@ -192,9 +192,17 @@ a{color:inherit}
   margin-top:18px;font-size:.97rem;line-height:1.62;text-align:justify;hyphens:auto}
 @media(max-width:560px){.cols{column-count:1}}
 .cols p{margin-bottom:.9em}
-.cols p:first-child::first-letter{
+.cols .lead-para::first-letter{
   font-family:"Bodoni Moda",serif;font-weight:900;float:left;font-size:4.6rem;line-height:.72;
   padding:6px 10px 0 0;color:var(--stamp)}
+/* in-column crossheads + section dinkus for a long-form feature read */
+.cols .crosshead{font-family:"Anton",sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:1.06rem;letter-spacing:.03em;line-height:1.05;margin:.5em 0 .45em;color:var(--ink);
+  break-after:avoid;-webkit-column-break-after:avoid}
+.cols .dinkus{text-align:center;color:var(--stamp);letter-spacing:.55em;
+  margin:.3em 0 .55em;font-size:.85rem;break-inside:avoid}
+.cols .standfirst{font-family:"Bodoni Moda",serif;font-style:italic;font-weight:500;
+  color:var(--ink);text-align:left}
 
 /* the right rail (photo + at-a-glance) */
 .rail{padding:18px 0 24px 26px;display:flex;flex-direction:column;gap:16px}
@@ -410,8 +418,27 @@ a{color:inherit}
       <p class="byline mono r d4">By Our Correspondent &nbsp;·&nbsp; <b>Lengishu, Borana</b> &nbsp;·&nbsp; Dateline: Dawn</p>
 
       <div class="cols r d5">
-        <p>Born in the Mukogodo Forest, a Laikipia Maasai of the Il Ngwesi, he was raised by the bush long before any classroom. His first post in conservation was as a radio signaller at Lewa Wildlife Conservancy — ears to the land, learning how people and wildlife might thrive as one.</p>
-        <p>He went on to Kenya Utalii College for his Advanced Tour Guiding Certificate, then kept going: ornithology, walking wild safaris, astronomy, first aid. In 2002 he turned full‑time. Today he guides at Lengishu, in Kenya's most successful rhino sanctuary, as one of just fifty‑nine Silver Guides in the country.</p>
+        <p class="standfirst">He was raised by the bush before any classroom claimed him. Two decades on, he walks guests into country he has known his whole life — and tracks its rarest animals on foot.</p>
+
+        <p class="lead-para">Born in the Mukogodo Forest of Northern Kenya, a Laikipiak Maasai of the Il Ngwesi, Nissa Ole Kinyaga learned to read the land before he learned to read a page. The forest was the first teacher: the grammar of fresh spoor in soft ground, the alarm calls that travel ahead of a moving leopard, the difference a single bent stem of grass can make when something large has passed in the night.</p>
+
+        <p>His first post in conservation put that schooling to work. As a <b>radio signaller at the Lewa Wildlife Conservancy</b>, he became the ears of the bush — coordinating teams across the plains, relaying sightings and movements, and watching, day after day, how people and wildlife might be made to thrive as one rather than at one another's expense. It was an apprenticeship in the quiet machinery of conservation, and it set the course of everything that followed.</p>
+
+        <h4 class="crosshead">A Formal Schooling in Wild Things</h4>
+
+        <p>From the field he went to the classroom. At <b>Kenya Utalii College</b> he earned his Advanced Tour Guiding Certificate — the formal foundation laid beneath a lifetime of inherited knowledge. He did not stop there. Course by course, season by season, he built out the disciplines: ornithology and the naming of birds; walking wild safaris and the craft of moving on foot among dangerous game; astronomy for the long southern nights; and first aid, because the frontier keeps its own counsel and a guide must be ready for it.</p>
+
+        <p>In <b>2002</b> he turned full‑time, and the work became a vocation. The years since have been measured not in postings but in mornings — thousands of them — spent reading the same country until its moods became second nature.</p>
+
+        <p class="dinkus">✦ ✦ ✦</p>
+
+        <h4 class="crosshead">The Sanctuary at Lengishu</h4>
+
+        <p>Today he guides at <b>Lengishu</b>, in the heart of the 32,000‑acre Borana Conservancy — Kenya's newest and most successful rhino sanctuary. It is here, at first light, that his signature walk begins: out on foot with the anti‑poaching rangers, following black and white rhino across dew‑heavy ground, learning how each animal is tracked, identified and kept safe from those who would take its horn.</p>
+
+        <p>He is one of just <b>fifty‑nine Silver Guides</b> in all of Kenya — the country's highest tier of guiding, and a standing earned rather than awarded. Yet for all the certificates, it is the small loyalties that give the work away. Ask him what he will always stop the vehicle for and the answer comes without hesitation: <i>leopards and wild dogs, every time, without fail.</i></p>
+
+        <p>What carries through it all is a plainly stated sense of purpose. To provide for his family by doing the thing he loves; to know that the work has weight, that the land and its animals are a little better defended for his being in it — that, he says, is the whole of it. On the Northern Frontier, where the wild and the human press hard against one another, it is no small creed to live by.</p>
       </div>
     </div>
 
